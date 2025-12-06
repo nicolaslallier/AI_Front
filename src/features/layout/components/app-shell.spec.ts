@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { createPinia } from 'pinia';
 import { describe, it, expect } from 'vitest';
 import { createRouter, createMemoryHistory } from 'vue-router';
 
@@ -20,11 +21,13 @@ describe('AppShell', () => {
   describe('component rendering', () => {
     it('should render the component', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -33,11 +36,13 @@ describe('AppShell', () => {
 
     it('should render AppHeader component', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -46,11 +51,13 @@ describe('AppShell', () => {
 
     it('should render AppNavigation component', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -59,9 +66,13 @@ describe('AppShell', () => {
 
     it('should render router-view for content', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
+          stubs: {
+            UserProfile: true,
+          },
         },
       });
       const routerView = wrapper.findComponent({ name: 'RouterView' });
@@ -70,11 +81,13 @@ describe('AppShell', () => {
 
     it('should have proper layout structure', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -86,11 +99,13 @@ describe('AppShell', () => {
   describe('navigation items', () => {
     it('should pass navigation items to AppNavigation', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -101,11 +116,13 @@ describe('AppShell', () => {
 
     it('should include Home navigation item', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -119,11 +136,13 @@ describe('AppShell', () => {
 
     it('should include Grafana navigation item', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -139,11 +158,13 @@ describe('AppShell', () => {
   describe('layout composition', () => {
     it('should render header before navigation', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -155,11 +176,13 @@ describe('AppShell', () => {
 
     it('should render navigation before content', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -173,11 +196,13 @@ describe('AppShell', () => {
   describe('content area', () => {
     it('should have a main content container', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -187,11 +212,13 @@ describe('AppShell', () => {
 
     it('should apply proper styling to content area', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });
@@ -203,11 +230,13 @@ describe('AppShell', () => {
   describe('accessibility', () => {
     it('should use semantic HTML5 elements', () => {
       const router = createRouterMock();
+      const pinia = createPinia();
       const wrapper = mount(AppShell, {
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
           stubs: {
             RouterView: true,
+            UserProfile: true,
           },
         },
       });

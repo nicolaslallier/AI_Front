@@ -386,18 +386,73 @@ The shell components accept props for customization:
 - No direct service dependencies
 - Props and events for component communication
 
+## Authentication Layer
+
+The application implements comprehensive Keycloak OIDC authentication with PKCE:
+
+### Components
+
+**Core Services** (`src/core/auth/`)
+- `keycloak-service.ts`: Keycloak client wrapper with PKCE, token management
+- `auth-store.ts`: Pinia store for global authentication state
+- `use-auth.ts`: Composable providing clean auth API to components
+- `auth-events.ts`: Event bus for auth state changes across micro front-ends
+
+**Route Protection** (`src/core/auth/guards/`)
+- `auth-guard.ts`: Global navigation guard requiring authentication
+- `role-guard.ts`: Role-based access control for routes
+
+**HTTP Integration** (`src/core/api/`)
+- `http-client.ts`: Automatic Bearer token injection, 401/403 handling
+- `api-service.ts`: Base class for type-safe API services
+
+**UI Components** (`src/features/auth/components/`)
+- `auth-login-button.vue`: Keycloak login trigger
+- `auth-logout-button.vue`: SSO logout with local session clear
+- `user-profile.vue`: Display user info, roles, and logout option
+
+**Views** (`src/features/auth/views/`)
+- `auth-callback-view.vue`: Handles Keycloak redirect after login
+- `unauthorized-view.vue`: Displayed when user lacks required roles
+
+### Authentication Flow
+
+```
+User → Protected Route → Auth Guard → Keycloak Login → 
+Token Exchange (PKCE) → Session Storage → Route Access → 
+API Calls (Bearer Token) → Silent Refresh → Logout (SSO)
+```
+
+### Key Features
+
+- **PKCE Flow**: Secure public client authentication
+- **Hybrid Storage**: In-memory + sessionStorage for security and UX
+- **Silent Refresh**: Automatic token renewal before expiration
+- **Role-Based UI**: Menu items and routes filtered by user roles
+- **401/403 Handling**: Automatic token refresh on API errors
+- **SSO Support**: Single Sign-On with Keycloak
+
+### Security
+
+- Minimal PII storage (Loi 25 compliance)
+- No tokens in URLs or logs
+- Session cleared on tab close (sessionStorage)
+- Content Security Policy ready
+- HTTPS required in production
+
+See [Authentication Guide](./AUTHENTICATION.md) for detailed setup and usage.
+
 ## Future Enhancements
 
 Potential architectural improvements:
 
-1. **Authentication Layer**: Add auth guards to routes
-2. **State Persistence**: Add local storage sync for Pinia stores
-3. **Internationalization**: Add i18n support to shell
-4. **Theme System**: Add dark mode and theme switching
-5. **Error Tracking**: Integrate error monitoring service
-6. **Analytics**: Add navigation and interaction tracking
-7. **Progressive Web App**: Add PWA capabilities
-8. **Module Federation**: Support runtime feature loading
+1. **State Persistence**: Add local storage sync for Pinia stores
+2. **Internationalization**: Add i18n support to shell
+3. **Theme System**: Add dark mode and theme switching
+4. **Error Tracking**: Integrate error monitoring service
+5. **Analytics**: Add navigation and interaction tracking
+6. **Progressive Web App**: Add PWA capabilities
+7. **Module Federation**: Support runtime feature loading
 
 ## Conclusion
 

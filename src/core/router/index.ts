@@ -1,12 +1,42 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
+import { authGuard, roleGuard } from '@/core/auth';
 import { Logger } from '@/shared/utils/logger';
 
 /**
  * Application route definitions
  * Structured with shell layout wrapping all child routes
+ *
+ * Route meta fields:
+ * - title: Page title
+ * - requiresAuth: Whether route requires authentication (default: true for all routes)
+ * - requiredRoles: Array of roles required to access the route
+ * - roleMatchMode: 'any' (default) or 'all' - how to match multiple roles
  */
 const routes: RouteRecordRaw[] = [
+  // Authentication callback route (public, no layout)
+  {
+    path: '/auth/callback',
+    name: 'auth-callback',
+    component: () => import('@/features/auth/views/auth-callback-view.vue'),
+    meta: {
+      title: 'Authenticating',
+      requiresAuth: false,
+    },
+  },
+
+  // Unauthorized access route (public, no layout)
+  {
+    path: '/unauthorized',
+    name: 'unauthorized',
+    component: () => import('@/features/auth/views/unauthorized-view.vue'),
+    meta: {
+      title: 'Access Denied',
+      requiresAuth: false,
+    },
+  },
+
+  // Main application routes with shell layout
   {
     path: '/',
     component: () => import('@/features/layout/components/app-shell.vue'),
@@ -21,6 +51,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/features/counter/views/home-view.vue'),
         meta: {
           title: 'Home',
+          requiresAuth: true, // All routes require auth as per user requirement
         },
       },
       {
@@ -29,9 +60,18 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/features/grafana/views/grafana-view.vue'),
         meta: {
           title: 'Grafana',
+          requiresAuth: true,
+          // Example: requiredRoles: ['ROLE_VIEWER', 'ROLE_ADMIN'],
+          // roleMatchMode: 'any',
         },
       },
     ],
+  },
+
+  // Catch-all redirect to home
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/home',
   },
 ];
 
@@ -49,9 +89,21 @@ const router = createRouter({
 });
 
 /**
- * Global navigation guard to update document title and log navigation
- * Implements FR-008 requirement for navigation logging
+ * Global navigation guards
+ *
+ * Executed in order:
+ * 1. Authentication guard - checks if user is authenticated
+ * 2. Role guard - checks if user has required roles
+ * 3. Title/logging guard - updates title and logs navigation
  */
+
+// Authentication guard (FR-FE-KC-010)
+router.beforeEach(authGuard);
+
+// Role-based authorization guard (FR-FE-KC-009)
+router.beforeEach(roleGuard);
+
+// Title and logging guard
 router.beforeEach((to, from, next) => {
   const title = to.meta.title as string;
   if (title) {

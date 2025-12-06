@@ -34,6 +34,12 @@ export interface NavigationItem {
    * @default false
    */
   external?: boolean;
+
+  /**
+   * Optional roles required to see this navigation item
+   * If specified, user must have at least one of these roles
+   */
+  requiredRoles?: string[];
 }
 
 /**

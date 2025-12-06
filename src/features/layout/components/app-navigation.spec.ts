@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect } from 'vitest';
+import { createPinia } from 'pinia';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { createRouter, createMemoryHistory } from 'vue-router';
 
 import AppNavigation from './app-navigation.vue';
@@ -12,34 +13,36 @@ describe('AppNavigation', () => {
     { id: 'grafana', label: 'Grafana', path: '/grafana' },
   ];
 
-  const createRouterMock = (): ReturnType<typeof createRouter> => {
-    return createRouter({
+  let router: ReturnType<typeof createRouter>;
+  let pinia: ReturnType<typeof createPinia>;
+
+  beforeEach(() => {
+    router = createRouter({
       history: createMemoryHistory(),
       routes: [
         { path: '/home', component: { template: '<div>Home</div>' } },
         { path: '/grafana', component: { template: '<div>Grafana</div>' } },
       ],
     });
-  };
+    pinia = createPinia();
+  });
 
   describe('component rendering', () => {
     it('should render the component', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       expect(wrapper.exists()).toBe(true);
     });
 
     it('should render all navigation items', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const links = wrapper.findAll('a');
@@ -47,11 +50,10 @@ describe('AppNavigation', () => {
     });
 
     it('should render navigation item labels', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       expect(wrapper.text()).toContain('Home');
@@ -59,11 +61,10 @@ describe('AppNavigation', () => {
     });
 
     it('should apply correct CSS classes to nav element', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const nav = wrapper.find('nav');
@@ -72,11 +73,10 @@ describe('AppNavigation', () => {
     });
 
     it('should render with empty items array', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: [] },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const links = wrapper.findAll('a');
@@ -86,43 +86,39 @@ describe('AppNavigation', () => {
 
   describe('visibility filtering', () => {
     it('should show items with visible=true', () => {
-      const router = createRouterMock();
       const items: NavigationItem[] = [{ id: 'visible', label: 'Visible', path: '/visible', visible: true }];
       const wrapper = mount(AppNavigation, {
         props: { items },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       expect(wrapper.text()).toContain('Visible');
     });
 
     it('should hide items with visible=false', () => {
-      const router = createRouterMock();
       const items: NavigationItem[] = [{ id: 'hidden', label: 'Hidden', path: '/hidden', visible: false }];
       const wrapper = mount(AppNavigation, {
         props: { items },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       expect(wrapper.text()).not.toContain('Hidden');
     });
 
     it('should show items without visible property (default to visible)', () => {
-      const router = createRouterMock();
       const items: NavigationItem[] = [{ id: 'default', label: 'Default', path: '/default' }];
       const wrapper = mount(AppNavigation, {
         props: { items },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       expect(wrapper.text()).toContain('Default');
     });
 
     it('should filter mixed visibility items correctly', () => {
-      const router = createRouterMock();
       const items: NavigationItem[] = [
         { id: 'visible1', label: 'Visible 1', path: '/v1', visible: true },
         { id: 'hidden', label: 'Hidden', path: '/h', visible: false },
@@ -131,7 +127,7 @@ describe('AppNavigation', () => {
       const wrapper = mount(AppNavigation, {
         props: { items },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const links = wrapper.findAll('a');
@@ -144,11 +140,10 @@ describe('AppNavigation', () => {
 
   describe('navigation functionality', () => {
     it('should use router-link for navigation', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const routerLinks = wrapper.findAllComponents({ name: 'RouterLink' });
@@ -156,11 +151,10 @@ describe('AppNavigation', () => {
     });
 
     it('should set correct to prop on router-links', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const routerLinks = wrapper.findAllComponents({ name: 'RouterLink' });
@@ -171,11 +165,10 @@ describe('AppNavigation', () => {
 
   describe('accessibility', () => {
     it('should have semantic nav element', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const nav = wrapper.find('nav');
@@ -183,11 +176,10 @@ describe('AppNavigation', () => {
     });
 
     it('should have accessible link text', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const links = wrapper.findAll('a');
@@ -199,18 +191,16 @@ describe('AppNavigation', () => {
 
   describe('props validation', () => {
     it('should accept items prop as array', () => {
-      const router = createRouterMock();
       const wrapper = mount(AppNavigation, {
         props: { items: mockItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       expect(wrapper.props('items')).toEqual(mockItems);
     });
 
     it('should maintain items order', () => {
-      const router = createRouterMock();
       const orderedItems: NavigationItem[] = [
         { id: 'first', label: 'First', path: '/first' },
         { id: 'second', label: 'Second', path: '/second' },
@@ -219,7 +209,7 @@ describe('AppNavigation', () => {
       const wrapper = mount(AppNavigation, {
         props: { items: orderedItems },
         global: {
-          plugins: [router],
+          plugins: [router, pinia],
         },
       });
       const links = wrapper.findAll('a');

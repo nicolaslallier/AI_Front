@@ -1,4 +1,16 @@
 /**
+ * Keycloak authentication configuration interface
+ */
+export interface KeycloakConfig {
+  url: string;
+  realm: string;
+  clientId: string;
+  minValidity: number;
+  checkInterval: number;
+  enableDebug: boolean;
+}
+
+/**
  * Application configuration interface
  */
 export interface AppConfig {
@@ -6,6 +18,7 @@ export interface AppConfig {
   environment: string;
   enableDebug: boolean;
   grafanaUrl: string;
+  keycloak: KeycloakConfig;
 }
 
 /**
@@ -17,6 +30,14 @@ export const config: AppConfig = {
   environment: import.meta.env.MODE || 'development',
   enableDebug: import.meta.env.DEV || false,
   grafanaUrl: import.meta.env.VITE_GRAFANA_URL || 'http://localhost/grafana/',
+  keycloak: {
+    url: import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost:8080',
+    realm: import.meta.env.VITE_KEYCLOAK_REALM || 'infra-admin',
+    clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'ai-front-spa',
+    minValidity: Number(import.meta.env.VITE_KEYCLOAK_MIN_VALIDITY) || 70,
+    checkInterval: Number(import.meta.env.VITE_KEYCLOAK_CHECK_INTERVAL) || 60,
+    enableDebug: import.meta.env.VITE_KEYCLOAK_DEBUG === 'true',
+  },
 };
 
 /**
