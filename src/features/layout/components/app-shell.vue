@@ -44,11 +44,49 @@ export default defineComponent({
           path: '/home',
           visible: true,
         },
+        // Observability & Monitoring section
         {
           id: 'grafana',
           label: 'Grafana',
           path: '/grafana',
           visible: true,
+          requiredRoles: ['ROLE_DEVOPS', 'ROLE_SECOPS', 'ROLE_OBS_VIEWER'],
+        },
+        {
+          id: 'loki',
+          label: 'Logs (Loki)',
+          path: '/logs',
+          visible: true,
+          requiredRoles: ['ROLE_DEVOPS', 'ROLE_SECOPS', 'ROLE_OBS_VIEWER'],
+        },
+        {
+          id: 'tempo',
+          label: 'Traces (Tempo)',
+          path: '/traces',
+          visible: true,
+          requiredRoles: ['ROLE_DEVOPS', 'ROLE_SECOPS', 'ROLE_OBS_VIEWER'],
+        },
+        {
+          id: 'prometheus',
+          label: 'Metrics (Prometheus)',
+          path: '/metrics',
+          visible: true,
+          requiredRoles: ['ROLE_DEVOPS', 'ROLE_SECOPS', 'ROLE_OBS_VIEWER'],
+        },
+        // Administration section
+        {
+          id: 'pgadmin',
+          label: 'pgAdmin',
+          path: '/pgadmin',
+          visible: true,
+          requiredRoles: ['ROLE_DBA', 'ROLE_DB_ADMIN'],
+        },
+        {
+          id: 'keycloak-admin',
+          label: 'Keycloak Admin',
+          path: '/keycloak',
+          visible: true,
+          requiredRoles: ['ROLE_IAM_ADMIN'],
         },
       ];
     });

@@ -11,7 +11,8 @@ A modern, production-ready Vue 3 Single Page Application built with TypeScript, 
 - 🎭 **Playwright** for E2E testing
 - 📦 **Pinia** for state management
 - 🛣️ **Vue Router** for navigation with shell layout
-- 📊 **Grafana Integration** - Embedded Grafana dashboards
+- 📊 **Console Hub** - Integrated admin/observability consoles (Grafana, pgAdmin, Keycloak, Loki, Tempo, Prometheus)
+- 🔒 **Role-Based Access Control** - Keycloak integration with fine-grained permissions
 - 🔍 **ESLint** + **Prettier** for code quality
 - 🐶 **Husky** for git hooks
 - 📝 **Commitlint** for conventional commits
@@ -96,10 +97,15 @@ src/
 │   │   ├── views/         # Page components
 │   │   └── index.ts       # Feature exports
 │   ├── grafana/       # Grafana integration feature
+│   ├── pgadmin/       # pgAdmin database administration
+│   ├── keycloak-admin/# Keycloak IAM administration
+│   ├── loki/          # Loki log aggregation
+│   ├── tempo/         # Tempo distributed tracing
+│   ├── prometheus/    # Prometheus metrics & alerting
 │   │   ├── components/     # Iframe, error handling
-│   │   ├── composables/    # Grafana state management
-│   │   ├── types/         # Grafana types
-│   │   ├── views/         # Grafana view
+│   │   ├── composables/    # State management
+│   │   ├── types/         # TypeScript types
+│   │   ├── views/         # Main view
 │   │   └── index.ts       # Feature exports
 │   └── layout/        # Application layout/shell
 │       ├── components/     # Header, navigation, shell
@@ -135,16 +141,38 @@ Each feature is self-contained with its own:
 - Complete test coverage (unit + E2E)
 - Independent deployability
 
-### Grafana Integration
-The Grafana feature provides embedded dashboard access:
-- **Iframe Integration**: Grafana rendered in isolated iframe
+### Console Hub Integration
+The application provides a unified access point to multiple admin and observability consoles:
+
+**Integrated Consoles:**
+- **Grafana** - Dashboards and visualizations (`/grafana`)
+- **Loki** - Log aggregation and querying (`/logs`)
+- **Tempo** - Distributed tracing (`/traces`)
+- **Prometheus** - Metrics and alerting (`/metrics`)
+- **pgAdmin** - Database administration (`/pgadmin`)
+- **Keycloak Admin** - IAM administration (`/keycloak`)
+
+**Features:**
+- **Iframe Integration**: Each console rendered in isolated, sandboxed iframe
+- **Role-Based Access**: Fine-grained access control via Keycloak roles
 - **Error Handling**: User-friendly error messages with retry mechanism
 - **Loading States**: Visual feedback during content loading
-- **Security**: Sandboxed iframe with appropriate permissions
+- **Unified Navigation**: Consistent shell layout across all consoles
+- **Security**: Sandboxed iframes with SSO integration
+
+**Access Control:**
+- Observability tools: `ROLE_DEVOPS`, `ROLE_SECOPS`, `ROLE_OBS_VIEWER`
+- Database admin: `ROLE_DBA`, `ROLE_DB_ADMIN`
+- IAM admin: `ROLE_IAM_ADMIN`
 
 ### Configuration
 Environment-specific configuration via `.env` files:
 - `VITE_GRAFANA_URL`: Grafana instance URL (default: `http://localhost/grafana/`)
+- `VITE_PGADMIN_URL`: pgAdmin URL (default: `http://localhost/pgadmin/`)
+- `VITE_KEYCLOAK_ADMIN_URL`: Keycloak Admin URL (default: `http://localhost/keycloak/`)
+- `VITE_LOKI_URL`: Loki URL (default: `http://localhost/loki/`)
+- `VITE_TEMPO_URL`: Tempo URL (default: `http://localhost/tempo/`)
+- `VITE_PROMETHEUS_URL`: Prometheus URL (default: `http://localhost/prometheus/`)
 - `VITE_API_BASE_URL`: API endpoint URL
 - Additional configuration in `src/core/config/`
 
@@ -203,6 +231,9 @@ Detailed documentation is available in the `docs/` directory:
 - [SOLID Principles](docs/SOLID_PRINCIPLES.md) - Architecture and design principles
 - [Testing](docs/TESTING.md) - Testing strategy and patterns
 - [Architecture](docs/ARCHITECTURE.md) - System architecture overview
+- [Console Hub](docs/CONSOLE_HUB.md) - Admin/observability console integration guide
+- [Console Hub Summary](docs/CONSOLE_HUB_SUMMARY.md) - Quick reference for console hub
+- [Authentication](docs/AUTHENTICATION.md) - Keycloak integration and RBAC
 - [CI/CD](docs/CICD.md) - Continuous Integration/Deployment
 - [Docker](docs/DOCKER.md) - Docker usage and deployment
 - [Cursor AI](docs/CURSOR_AI.md) - Working with Cursor AI assistant

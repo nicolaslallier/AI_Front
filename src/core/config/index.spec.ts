@@ -24,15 +24,65 @@ describe('config', () => {
       expect(typeof config.grafanaUrl).toBe('string');
     });
 
+    it('should have pgAdminUrl property', () => {
+      expect(config).toHaveProperty('pgAdminUrl');
+      expect(typeof config.pgAdminUrl).toBe('string');
+    });
+
+    it('should have keycloakAdminUrl property', () => {
+      expect(config).toHaveProperty('keycloakAdminUrl');
+      expect(typeof config.keycloakAdminUrl).toBe('string');
+    });
+
+    it('should have lokiUrl property', () => {
+      expect(config).toHaveProperty('lokiUrl');
+      expect(typeof config.lokiUrl).toBe('string');
+    });
+
+    it('should have tempoUrl property', () => {
+      expect(config).toHaveProperty('tempoUrl');
+      expect(typeof config.tempoUrl).toBe('string');
+    });
+
+    it('should have prometheusUrl property', () => {
+      expect(config).toHaveProperty('prometheusUrl');
+      expect(typeof config.prometheusUrl).toBe('string');
+    });
+
     it('should provide default values', () => {
       expect(config.apiBaseUrl).toBeDefined();
       expect(config.environment).toBeDefined();
       expect(config.enableDebug).toBeDefined();
       expect(config.grafanaUrl).toBeDefined();
+      expect(config.pgAdminUrl).toBeDefined();
+      expect(config.keycloakAdminUrl).toBeDefined();
+      expect(config.lokiUrl).toBeDefined();
+      expect(config.tempoUrl).toBeDefined();
+      expect(config.prometheusUrl).toBeDefined();
     });
 
     it('should have default Grafana URL', () => {
       expect(config.grafanaUrl).toBe('http://localhost/grafana/');
+    });
+
+    it('should have default pgAdmin URL', () => {
+      expect(config.pgAdminUrl).toBe('http://localhost/pgadmin/');
+    });
+
+    it('should have default Keycloak Admin URL', () => {
+      expect(config.keycloakAdminUrl).toBe('http://localhost/keycloak/');
+    });
+
+    it('should have default Loki URL', () => {
+      expect(config.lokiUrl).toBe('http://localhost/loki/');
+    });
+
+    it('should have default Tempo URL', () => {
+      expect(config.tempoUrl).toBe('http://localhost/tempo/');
+    });
+
+    it('should have default Prometheus URL', () => {
+      expect(config.prometheusUrl).toBe('http://localhost/prometheus/');
     });
   });
 

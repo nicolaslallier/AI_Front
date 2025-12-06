@@ -31,7 +31,8 @@ test.describe('Application Navigation', () => {
   test.describe('Navigation Menu Structure', () => {
     test('should display all navigation items', async ({ page }) => {
       const navLinks = page.locator('nav a');
-      await expect(navLinks).toHaveCount(2);
+      // Home + 6 console items (Grafana, Loki, Tempo, Prometheus, pgAdmin, Keycloak)
+      await expect(navLinks).toHaveCount(7);
     });
 
     test('should have Home navigation item', async ({ page }) => {
@@ -44,9 +45,29 @@ test.describe('Application Navigation', () => {
       await expect(grafanaLink).toBeVisible();
     });
 
-    test('should display navigation items in correct order', async ({ page }) => {
+    test('should have all console navigation items', async ({ page }) => {
+      // Observability consoles
+      await expect(page.getByRole('link', { name: 'Grafana' })).toBeVisible();
+      await expect(page.getByRole('link', { name: /Logs.*Loki/ })).toBeVisible();
+      await expect(page.getByRole('link', { name: /Traces.*Tempo/ })).toBeVisible();
+      await expect(page.getByRole('link', { name: /Metrics.*Prometheus/ })).toBeVisible();
+
+      // Admin consoles
+      await expect(page.getByRole('link', { name: 'pgAdmin' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Keycloak Admin' })).toBeVisible();
+    });
+
+    test('should display navigation items with Home first', async ({ page }) => {
       const links = await page.locator('nav a').allTextContents();
-      expect(links).toEqual(['Home', 'Grafana']);
+      expect(links[0]).toBe('Home');
+
+      // Verify all console items are present
+      expect(links).toContain('Grafana');
+      expect(links).toContain('Logs (Loki)');
+      expect(links).toContain('Traces (Tempo)');
+      expect(links).toContain('Metrics (Prometheus)');
+      expect(links).toContain('pgAdmin');
+      expect(links).toContain('Keycloak Admin');
     });
   });
 
