@@ -19,10 +19,20 @@ describe('config', () => {
       expect(typeof config.enableDebug).toBe('boolean');
     });
 
+    it('should have grafanaUrl property', () => {
+      expect(config).toHaveProperty('grafanaUrl');
+      expect(typeof config.grafanaUrl).toBe('string');
+    });
+
     it('should provide default values', () => {
       expect(config.apiBaseUrl).toBeDefined();
       expect(config.environment).toBeDefined();
       expect(config.enableDebug).toBeDefined();
+      expect(config.grafanaUrl).toBeDefined();
+    });
+
+    it('should have default Grafana URL', () => {
+      expect(config.grafanaUrl).toBe('http://localhost/grafana/');
     });
   });
 

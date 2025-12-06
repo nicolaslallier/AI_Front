@@ -10,7 +10,8 @@ A modern, production-ready Vue 3 Single Page Application built with TypeScript, 
 - 🧪 **Vitest** for unit/component testing (90%+ coverage)
 - 🎭 **Playwright** for E2E testing
 - 📦 **Pinia** for state management
-- 🛣️ **Vue Router** for navigation
+- 🛣️ **Vue Router** for navigation with shell layout
+- 📊 **Grafana Integration** - Embedded Grafana dashboards
 - 🔍 **ESLint** + **Prettier** for code quality
 - 🐶 **Husky** for git hooks
 - 📝 **Commitlint** for conventional commits
@@ -86,13 +87,23 @@ make preview
 ```
 src/
 ├── features/           # Feature modules (feature-based architecture)
-│   └── counter/       # Example counter feature
-│       ├── components/     # Feature-specific components
-│       ├── composables/    # Feature composables (hooks)
-│       ├── stores/        # Pinia stores
-│       ├── types/         # TypeScript types
-│       ├── utils/         # Utility functions
-│       ├── views/         # Page components
+│   ├── counter/       # Counter feature example
+│   │   ├── components/     # Feature-specific components
+│   │   ├── composables/    # Feature composables (hooks)
+│   │   ├── stores/        # Pinia stores
+│   │   ├── types/         # TypeScript types
+│   │   ├── utils/         # Utility functions
+│   │   ├── views/         # Page components
+│   │   └── index.ts       # Feature exports
+│   ├── grafana/       # Grafana integration feature
+│   │   ├── components/     # Iframe, error handling
+│   │   ├── composables/    # Grafana state management
+│   │   ├── types/         # Grafana types
+│   │   ├── views/         # Grafana view
+│   │   └── index.ts       # Feature exports
+│   └── layout/        # Application layout/shell
+│       ├── components/     # Header, navigation, shell
+│       ├── types/         # Navigation types
 │       └── index.ts       # Feature exports
 ├── shared/            # Shared code across features
 │   ├── components/   # Reusable components
@@ -107,6 +118,35 @@ src/
 ├── App.vue         # Root component
 └── main.ts         # Application entry point
 ```
+
+## Application Architecture
+
+This application implements a **micro front-end SPA** architecture with a persistent shell layout:
+
+### Shell Layout
+The application uses a shell layout that wraps all routes, providing:
+- **Persistent Header**: Application title and branding
+- **Navigation Menu**: Dynamic navigation items
+- **Content Area**: Router view for feature modules
+
+### Features
+Each feature is self-contained with its own:
+- Components, composables, stores, types, and views
+- Complete test coverage (unit + E2E)
+- Independent deployability
+
+### Grafana Integration
+The Grafana feature provides embedded dashboard access:
+- **Iframe Integration**: Grafana rendered in isolated iframe
+- **Error Handling**: User-friendly error messages with retry mechanism
+- **Loading States**: Visual feedback during content loading
+- **Security**: Sandboxed iframe with appropriate permissions
+
+### Configuration
+Environment-specific configuration via `.env` files:
+- `VITE_GRAFANA_URL`: Grafana instance URL (default: `http://localhost/grafana/`)
+- `VITE_API_BASE_URL`: API endpoint URL
+- Additional configuration in `src/core/config/`
 
 ## Available Commands
 

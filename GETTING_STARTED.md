@@ -1,298 +1,496 @@
 # Getting Started with AI Front
 
-Welcome to your new Vue 3 SPA development environment! This guide will help you get up and running quickly.
+This guide will help you set up and run the AI Front application on your local machine.
 
-## 🚀 Quick Start
+## Prerequisites
 
-### 1. Install Dependencies
+Before you begin, ensure you have the following installed:
+
+- **Node.js** 20.x or higher
+- **npm** 9.x or higher (comes with Node.js)
+- **Git** for version control
+- **Docker** (optional, for containerized development)
+
+## Installation
+
+### 1. Clone the Repository
 
 ```bash
-cd "/Users/nicolaslallier/Dev Nick/AI_Front"
+git clone <repository-url>
+cd ai-front
+```
+
+### 2. Install Dependencies
+
+```bash
+# Using Makefile (recommended)
 make install
+
+# Or using npm directly
+npm ci
 ```
 
-This will:
-- Install all npm packages with exact versions
-- Set up git hooks (Husky)
-- Install Playwright browsers for E2E testing
+The `npm ci` command (Clean Install) is preferred over `npm install` as it:
+- Installs exact versions from package-lock.json
+- Ensures consistent installations across environments
+- Is faster and more reliable for CI/CD
 
-### 2. Start Development Server
+## Configuration
+
+### Environment Variables
+
+The application uses environment variables for configuration. Create a `.env` file in the root directory:
 
 ```bash
+# .env file
+
+# API Configuration
+VITE_API_BASE_URL=http://localhost:3000/api
+
+# Grafana Configuration
+VITE_GRAFANA_URL=http://localhost/grafana/
+
+# Environment
+VITE_ENV=development
+```
+
+### Available Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `VITE_API_BASE_URL` | Backend API endpoint | `http://localhost:3000/api` |
+| `VITE_GRAFANA_URL` | Grafana instance URL | `http://localhost/grafana/` |
+| `VITE_ENV` | Environment name | `development` |
+
+**Note**: All environment variables must be prefixed with `VITE_` to be accessible in the application.
+
+### Environment-Specific Configuration
+
+Create different `.env` files for different environments:
+
+- `.env.development` - Development environment
+- `.env.staging` - Staging environment
+- `.env.production` - Production environment
+
+Vite will automatically load the appropriate file based on the mode.
+
+## Running the Application
+
+### Development Server
+
+Start the development server with hot-reload:
+
+```bash
+# Using Makefile
 make dev
+
+# Or using npm
+npm run dev
 ```
 
-The application will open automatically at http://localhost:3000
+The application will be available at `http://localhost:5173` (default Vite port).
 
-### 3. Run Tests
+### Features Available
 
-```bash
-# Watch mode (TDD)
-make test-watch
+Once running, you can access:
 
-# Single run with coverage
-make test
-```
+1. **Home Page** (`/home`): Counter feature demonstration
+2. **Grafana** (`/grafana`): Embedded Grafana dashboards
 
-## 📁 Project Structure
+The application shell provides persistent navigation between these features.
 
-```
-AI_Front/
-├── src/
-│   ├── features/          # Feature modules (counter example included)
-│   ├── shared/            # Shared utilities and components
-│   ├── core/              # Core app logic (router, config)
-│   ├── assets/            # Static assets
-│   ├── App.vue            # Root component
-│   └── main.ts            # Entry point
-├── tests/
-│   └── e2e/               # Playwright E2E tests
-├── docs/                  # Comprehensive documentation
-├── Makefile               # CI/CD automation
-├── Dockerfile             # Multi-stage Docker build
-├── .cursorrules           # Cursor AI configuration
-└── README.md              # Main documentation
-```
+## Development Workflow
 
-## 🎯 What's Included
+### Test-Driven Development (TDD)
 
-### Development Tools
-✅ **Vue 3** with Composition API
-✅ **TypeScript** with strict mode
-✅ **Tailwind CSS** for styling
-✅ **Vite** for fast builds
-✅ **ESLint** + **Prettier** (auto-enforced)
-✅ **Vitest** for unit tests (90%+ coverage required)
-✅ **Playwright** for E2E tests
+This project follows TDD practices. The recommended workflow is:
 
-### Quality Assurance
-✅ **Husky** git hooks (pre-commit checks)
-✅ **Commitlint** (conventional commits)
-✅ **90% test coverage** threshold
-✅ **JSDoc** documentation requirements
-✅ **SOLID principles** enforcement
+1. **Write a failing test**
+   ```bash
+   npm run test:watch
+   ```
 
-### Deployment
-✅ **Docker** with multi-stage builds
-✅ **Makefile** CI/CD automation
-✅ **GitHub Actions**, **GitLab CI**, **Jenkins** configs
-✅ **Nginx** production configuration
+2. **Implement the feature** to make the test pass
 
-## 🏗️ Architecture Overview
-
-This project uses a **feature-based architecture**:
-
-```
-features/
-└── counter/              # Example feature
-    ├── components/       # UI components
-    ├── composables/      # Business logic hooks
-    ├── stores/           # Pinia state management
-    ├── types/            # TypeScript definitions
-    ├── utils/            # Helper functions
-    ├── views/            # Page components
-    └── index.ts          # Public API
-```
-
-Each feature is self-contained and follows SOLID principles.
-
-## 📚 Essential Documentation
-
-Start with these documents:
-
-1. **[README.md](./README.md)** - Main documentation and commands
-2. **[docs/CODING_STANDARDS.md](./docs/CODING_STANDARDS.md)** - Code style rules
-3. **[docs/TDD_GUIDE.md](./docs/TDD_GUIDE.md)** - Testing approach
-4. **[docs/CURSOR_AI.md](./docs/CURSOR_AI.md)** - Working with AI assistant
-5. **[docs/SOLID_PRINCIPLES.md](./docs/SOLID_PRINCIPLES.md)** - Architecture principles
-
-## 💻 Common Commands
-
-### Development
-```bash
-make dev              # Start dev server
-make test-watch       # TDD mode
-```
-
-### Code Quality
-```bash
-make validate         # Run all checks
-make lint-fix         # Fix linting issues
-make format           # Format code
-```
-
-### Testing
-```bash
-make test             # Unit tests with coverage
-make test-e2e         # E2E tests
-make test-coverage    # Open coverage report
-```
-
-### Build & Deploy
-```bash
-make build            # Production build
-make docker-build     # Build Docker image
-make pipeline         # Full CI/CD pipeline
-```
-
-## 🎨 Example Feature: Counter
-
-A complete counter feature is included as a reference:
-
-- **View**: `src/features/counter/views/home-view.vue`
-- **Components**: Display, controls, history
-- **Store**: Pinia store with validation
-- **Tests**: 100% coverage with unit and E2E tests
-- **Composable**: Abstraction layer over store
-
-Study this feature to understand the architecture.
-
-## 🧪 Test-Driven Development
-
-This project follows strict TDD:
-
-1. **Write test first** (red)
-2. **Implement minimal code** (green)
 3. **Refactor** while keeping tests green
 
-See `src/features/counter/` for TDD examples.
+4. **Verify coverage**
+   ```bash
+   npm run test
+   ```
 
-## 🤖 Cursor AI Assistant
+### Running Tests
 
-The project includes a `.cursorrules` file that configures Cursor AI to:
-
-- Enforce coding standards automatically
-- Always create tests with code
-- Provide detailed technical explanations
-- Follow SOLID principles
-- Generate comprehensive JSDoc
-
-Read [docs/CURSOR_AI.md](./docs/CURSOR_AI.md) to learn how to work effectively with the AI.
-
-## 📝 Coding Standards Highlights
-
-- **Files**: kebab-case (e.g., `user-profile.vue`)
-- **Quotes**: Single quotes with semicolons
-- **Line Length**: 120 characters max
-- **Components**: Composition API (not `<script setup>`)
-- **Imports**: Strict ordering (external → internal → types)
-- **Documentation**: JSDoc for all public APIs
-- **Testing**: 90%+ coverage required
-
-## 🔐 Git Workflow
-
-### Commit Messages
-
-Follow Conventional Commits:
+#### Unit and Component Tests
 
 ```bash
-feat: add user authentication
-fix: resolve routing issue
-docs: update README
-test: add unit tests for login
-refactor: improve store structure
+# Run all tests with coverage
+make test
+
+# Watch mode for TDD
+make test-watch
+
+# Or using npm
+npm run test
+npm run test:watch
 ```
 
-### Pre-Commit Checks
+Tests are written using:
+- **Vitest** for test runner
+- **@vue/test-utils** for component testing
+- **jsdom** for DOM simulation
 
-Automated checks run before each commit:
-- ✅ Linting (ESLint)
-- ✅ Formatting (Prettier)
-- ✅ Type checking (TypeScript)
-- ✅ Commit message format
+#### E2E Tests
 
-## 🐳 Docker Support
-
-### Local Development
 ```bash
-make docker-build     # Build image
-make docker-run       # Run container
+# Run E2E tests
+make test-e2e
+
+# Run E2E tests with UI
+npm run test:e2e:ui
+
+# Or using npm
+npm run test:e2e
 ```
 
-### Production Deployment
+E2E tests use **Playwright** to test complete user flows.
+
+### Code Quality Checks
+
+#### Linting
+
 ```bash
-docker-compose up     # Run with compose
+# Check for linting errors
+make lint
+
+# Fix auto-fixable issues
+make lint-fix
+
+# Or using npm
+npm run lint
+npm run lint:fix
 ```
 
-The Dockerfile uses multi-stage builds for optimal size.
+#### Code Formatting
 
-## 🚢 Deployment
-
-### Using Makefile
 ```bash
-make deploy-staging       # Deploy to staging
-make deploy-production    # Deploy to production
-make smoke-test          # Post-deployment tests
-make rollback            # Rollback if needed
+# Check formatting
+make format-check
+
+# Format code
+make format
+
+# Or using npm
+npm run format:check
+npm run format
 ```
 
-### CI/CD Platforms
+#### Type Checking
 
-Choose your platform:
-- **GitHub Actions**: `.github/workflows/ci.yml`
-- **GitLab CI**: `.gitlab-ci.yml`
-- **Jenkins**: `Jenkinsfile`
+```bash
+# Run TypeScript type checking
+make type-check
 
-All use Makefile for consistency.
+# Or using npm
+npm run type-check
+```
 
-## 🎓 Learning Resources
+#### Run All Quality Checks
 
-### Within This Project
-- Study the counter feature implementation
-- Read all documentation in `docs/`
-- Review test examples
-- Examine configuration files
+```bash
+# Run lint, format, and type checks
+make validate
 
-### External Resources
-- [Vue 3 Documentation](https://vuejs.org)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Vitest Documentation](https://vitest.dev)
-- [Playwright Docs](https://playwright.dev)
-- [SOLID Principles](https://en.wikipedia.org/wiki/SOLID)
+# Or using npm
+npm run validate
+```
 
-## 🆘 Getting Help
+## Building for Production
 
-### Documentation
-1. Check `docs/` folder for detailed guides
-2. Read inline code comments and JSDoc
-3. Review example counter feature
+### Create Production Build
 
-### Cursor AI
-Ask the AI assistant for help:
-- "Explain how this feature works"
-- "Review my code for issues"
-- "How do I implement X following our standards?"
+```bash
+# Build optimized production bundle
+make build
 
-### Common Issues
+# Or using npm
+npm run build
+```
 
-**Tests failing**: Check coverage meets 90% threshold
-**Lint errors**: Run `make lint-fix`
-**Type errors**: Ensure strict TypeScript compliance
-**Git hooks failing**: Ensure code quality checks pass
+The build output will be in the `dist/` directory.
 
-## 🎯 Next Steps
+### Preview Production Build
 
-1. ✅ **Explore** the counter feature to understand patterns
-2. ✅ **Read** the documentation (start with CODING_STANDARDS.md)
-3. ✅ **Create** your first feature following the architecture
-4. ✅ **Write** tests first (TDD approach)
-5. ✅ **Ask** Cursor AI for guidance
-6. ✅ **Run** `make validate` before committing
-7. ✅ **Review** your code against SOLID principles
+```bash
+# Preview production build locally
+make preview
 
-## 📊 Project Status
+# Or using npm
+npm run preview
+```
 
-✅ All configuration complete
-✅ Example feature implemented
-✅ Tests passing (100% coverage in example)
-✅ Documentation comprehensive
-✅ CI/CD pipelines configured
-✅ Docker deployment ready
-✅ Cursor AI rules configured
+This serves the production build locally for testing.
 
-You're ready to start developing! 🎉
+## Docker Development
 
----
+### Build Docker Image
 
-**Questions?** Check the documentation or ask Cursor AI for help following our coding standards.
+```bash
+make docker-build
+```
+
+### Run in Docker Container
+
+```bash
+make docker-run
+```
+
+The application will be available at `http://localhost:80`.
+
+### Stop Docker Container
+
+```bash
+make docker-stop
+```
+
+## Project Structure
+
+Understanding the project structure:
+
+```
+src/
+├── features/          # Feature modules
+│   ├── counter/      # Counter feature
+│   ├── grafana/      # Grafana integration
+│   └── layout/       # Shell layout
+├── shared/           # Shared utilities
+│   ├── types/       # Common types
+│   └── utils/       # Utility functions
+├── core/            # Core infrastructure
+│   ├── config/      # Configuration
+│   └── router/      # Router setup
+├── assets/          # Static assets
+├── App.vue          # Root component
+└── main.ts          # Entry point
+```
+
+### Adding a New Feature
+
+1. **Create feature directory:**
+   ```bash
+   mkdir -p src/features/my-feature/{components,composables,types,views}
+   ```
+
+2. **Create feature files:**
+   - Components in `components/`
+   - State management in `composables/`
+   - Types in `types/`
+   - Page views in `views/`
+   - Tests alongside each file (`.spec.ts`)
+
+3. **Add route:**
+   Edit `src/core/router/index.ts`:
+   ```typescript
+   {
+     path: 'my-feature',
+     name: 'my-feature',
+     component: () => import('@/features/my-feature/views/my-feature-view.vue'),
+     meta: { title: 'My Feature' },
+   }
+   ```
+
+4. **Add navigation item:**
+   Edit `src/features/layout/components/app-shell.vue`:
+   ```typescript
+   {
+     id: 'my-feature',
+     label: 'My Feature',
+     path: '/my-feature',
+     visible: true,
+   }
+   ```
+
+5. **Write tests first** (TDD approach)
+
+6. **Implement the feature**
+
+## Grafana Integration
+
+### Prerequisites for Grafana
+
+The Grafana integration requires a running Grafana instance. You can:
+
+1. **Use existing Grafana**: Configure `VITE_GRAFANA_URL` to point to your instance
+2. **Run Grafana locally with Docker**:
+   ```bash
+   docker run -d -p 3000:3000 grafana/grafana
+   ```
+   Then set `VITE_GRAFANA_URL=http://localhost:3000/`
+
+### Grafana Configuration
+
+The Grafana feature will:
+- Display a loading indicator while Grafana loads
+- Show the Grafana interface in an isolated iframe
+- Display an error message with retry if Grafana is unavailable
+- Log navigation to the Grafana page
+
+### Troubleshooting Grafana
+
+If Grafana doesn't load:
+
+1. **Check Grafana is running**: Visit the Grafana URL directly in a browser
+2. **Check CORS settings**: Ensure Grafana allows embedding in iframes
+3. **Check URL configuration**: Verify `VITE_GRAFANA_URL` is correct
+4. **Check browser console**: Look for security or network errors
+5. **Try the retry button**: Click retry in the error message
+
+## Common Issues and Solutions
+
+### Port Already in Use
+
+If port 5173 is already in use:
+
+```bash
+# Kill the process using the port
+lsof -ti:5173 | xargs kill -9
+
+# Or specify a different port
+npm run dev -- --port 3001
+```
+
+### Node Version Issues
+
+Ensure you're using Node.js 20.x or higher:
+
+```bash
+node --version
+
+# If wrong version, use nvm to switch
+nvm use 20
+```
+
+### Module Not Found Errors
+
+Clear node_modules and reinstall:
+
+```bash
+rm -rf node_modules package-lock.json
+npm ci
+```
+
+### Test Failures
+
+If tests fail after changes:
+
+1. Run tests in watch mode to see failures: `npm run test:watch`
+2. Check if snapshots need updating: Press `u` in watch mode
+3. Verify all dependencies are installed: `npm ci`
+4. Clear test cache: `npm run test -- --clearCache`
+
+### TypeScript Errors
+
+If you see TypeScript errors:
+
+1. Ensure your IDE is using the workspace TypeScript version
+2. Restart the TypeScript server in your IDE
+3. Run `npm run type-check` to see all errors
+4. Check `tsconfig.json` for configuration issues
+
+## Git Workflow
+
+### Commit Message Format
+
+This project uses **Conventional Commits**:
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+
+**Examples:**
+```bash
+feat(grafana): add embedded Grafana dashboard integration
+
+Implemented iframe-based Grafana integration with error handling
+and retry mechanism. Updated navigation to include Grafana menu item.
+
+Closes #123
+```
+
+### Pre-commit Hooks
+
+The project uses Husky for pre-commit hooks that automatically:
+- Run linting
+- Check formatting
+- Run type checking
+- Validate commit messages
+
+If commit fails, fix the issues and try again.
+
+## IDE Setup
+
+### VS Code (Recommended)
+
+Install recommended extensions:
+- **Vue - Official** (Vue language support)
+- **ESLint** (Linting)
+- **Prettier** (Formatting)
+- **TypeScript Vue Plugin (Volar)** (TypeScript support)
+
+Settings are included in `.vscode/settings.json`.
+
+### Other IDEs
+
+Configure your IDE to:
+- Use the workspace TypeScript version
+- Enable ESLint integration
+- Enable Prettier integration
+- Use the project's formatter settings
+
+## Next Steps
+
+Now that you have the application running:
+
+1. **Explore the codebase**: Start with `src/main.ts` and follow the imports
+2. **Read the documentation**: Check `docs/` directory for detailed guides
+3. **Try the features**: Navigate between Home and Grafana
+4. **Run the tests**: See how testing works in this project
+5. **Make a change**: Follow TDD to add a small feature
+6. **Review coding standards**: Read `docs/CODING_STANDARDS.md`
+
+## Getting Help
+
+If you encounter issues:
+
+1. Check this guide thoroughly
+2. Review the documentation in `docs/`
+3. Check the project README.md
+4. Search for similar issues in the project's issue tracker
+5. Ask the development team
+
+## Additional Resources
+
+- [Vue 3 Documentation](https://vuejs.org/)
+- [TypeScript Documentation](https://www.typescriptlang.org/)
+- [Vite Documentation](https://vitejs.dev/)
+- [Vitest Documentation](https://vitest.dev/)
+- [Playwright Documentation](https://playwright.dev/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/)
+- [Pinia Documentation](https://pinia.vuejs.org/)
+- [Vue Router Documentation](https://router.vuejs.org/)
+
+Happy coding! 🚀
 

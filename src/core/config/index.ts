@@ -5,6 +5,7 @@ export interface AppConfig {
   apiBaseUrl: string;
   environment: string;
   enableDebug: boolean;
+  grafanaUrl: string;
 }
 
 /**
@@ -15,6 +16,7 @@ export const config: AppConfig = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api',
   environment: import.meta.env.MODE || 'development',
   enableDebug: import.meta.env.DEV || false,
+  grafanaUrl: import.meta.env.VITE_GRAFANA_URL || 'http://localhost/grafana/',
 };
 
 /**
