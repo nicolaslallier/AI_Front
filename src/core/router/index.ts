@@ -120,6 +120,17 @@ const routes: RouteRecordRaw[] = [
           roleMatchMode: 'any',
         },
       },
+      {
+        path: 'minio',
+        name: 'minio',
+        component: () => import('@/features/minio/views/minio-view.vue'),
+        meta: {
+          title: 'MinIO Storage',
+          requiresAuth: true,
+          requiredRoles: ['ROLE_MINIO_ADMIN', 'ROLE_MINIO_READONLY'],
+          roleMatchMode: 'any',
+        },
+      },
     ],
   },
 

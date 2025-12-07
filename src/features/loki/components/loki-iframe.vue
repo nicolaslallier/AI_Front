@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-full min-h-screen">
+  <div class="relative w-full h-full min-h-full">
     <!-- Loading Overlay -->
     <div
       v-if="isLoading"
@@ -17,7 +17,7 @@
     <!-- Loki Iframe -->
     <iframe
       :src="url"
-      class="w-full h-full border-0"
+      class="w-full h-full min-h-full border-0"
       title="Loki Database Administration"
       allowfullscreen
       sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"

@@ -38,34 +38,54 @@ export default defineComponent({
      * Processes the authentication callback
      *
      * After Keycloak redirects back, the Keycloak service automatically
-     * processes the authorization code. We just need to wait for it to complete
-     * and then redirect to the intended route.
+     * processes the authorization code. We need to wait for authentication
+     * to complete and then redirect to the intended route.
      */
     async function handleCallback(): Promise<void> {
       try {
         Logger.info('Processing authentication callback...');
 
-        // Wait a bit for Keycloak to process the callback
-        // The Keycloak init should handle the code exchange automatically
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Wait for authentication to complete with polling (max 10 seconds)
+        const maxAttempts = 20; // 20 attempts * 500ms = 10 seconds max
+        let attempts = 0;
 
-        // Check if user is now authenticated
-        if (auth.isAuthenticated.value) {
-          Logger.info('Authentication successful, redirecting to intended route');
+        while (attempts < maxAttempts) {
+          // Check if user is authenticated
+          if (auth.isAuthenticated.value) {
+            Logger.info('Authentication successful, redirecting to intended route');
 
-          // Get intended route or default to home
-          const intendedRoute = getAndClearIntendedRoute() || '/home';
+            // Get intended route or default to home
+            const intendedRoute = getAndClearIntendedRoute() || '/home';
 
-          // Redirect to intended destination
-          await router.push(intendedRoute);
-        } else {
-          throw new Error('Authentication failed - user not authenticated after callback');
+            // Redirect to intended destination
+            await router.push(intendedRoute);
+            return;
+          }
+
+          // Wait 500ms before next check
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          attempts++;
+
+          if (attempts % 4 === 0) {
+            Logger.info(`Still waiting for authentication... (${attempts}/20)`);
+          }
         }
+
+        // Timeout reached, authentication failed
+        throw new Error('Authentication timeout - please try again');
       } catch (err) {
         Logger.error('Authentication callback failed', err);
         error.value = err instanceof Error ? err.message : 'Authentication failed';
 
-        // Redirect to home after a delay
+        // Clear any stored session to prevent loops
+        try {
+          sessionStorage.removeItem('kc_session');
+        } catch {
+          // Ignore storage errors
+        }
+
+        // Show error for 3 seconds, then redirect to home
+        // This will trigger auth guard which will restart login flow
         setTimeout(() => {
           router.push('/home');
         }, 3000);

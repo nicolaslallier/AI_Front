@@ -10,15 +10,15 @@
     >
       <div class="text-center">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        <p class="mt-4 text-gray-600 font-medium">Loading pgAdmin...</p>
+        <p class="mt-4 text-gray-600 font-medium">Loading MinIO console...</p>
       </div>
     </div>
 
-    <!-- pgAdmin Iframe -->
+    <!-- MinIO Iframe -->
     <iframe
       :src="url"
       class="w-full h-full min-h-full border-0"
-      title="pgAdmin Database Administration"
+      title="MinIO Console"
       allowfullscreen
       sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
       @load="handleLoad"
@@ -31,18 +31,18 @@
 import { defineComponent } from 'vue';
 
 /**
- * pgAdmin iframe component
- * Renders pgAdmin in an isolated iframe with loading state management
+ * MinIO iframe component
+ * Renders MinIO console in an isolated iframe with loading state management
  *
  * Follows the Single Responsibility Principle by focusing on iframe rendering and event handling
  * Emits events to parent for state management (Dependency Inversion)
  */
 export default defineComponent({
-  name: 'PgAdminIframe',
+  name: 'MinioIframe',
 
   props: {
     /**
-     * URL of the pgAdmin instance to load
+     * URL of the MinIO console instance to load
      */
     url: {
       type: String,
@@ -50,7 +50,7 @@ export default defineComponent({
     },
 
     /**
-     * Whether pgAdmin is currently loading
+     * Whether MinIO console is currently loading
      */
     isLoading: {
       type: Boolean,

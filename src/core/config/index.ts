@@ -23,6 +23,7 @@ export interface AppConfig {
   lokiUrl: string;
   tempoUrl: string;
   prometheusUrl: string;
+  minioUrl: string;
   keycloak: KeycloakConfig;
 }
 
@@ -40,8 +41,9 @@ export const config: AppConfig = {
   lokiUrl: import.meta.env.VITE_LOKI_URL || 'http://localhost/loki/',
   tempoUrl: import.meta.env.VITE_TEMPO_URL || 'http://localhost/tempo/',
   prometheusUrl: import.meta.env.VITE_PROMETHEUS_URL || 'http://localhost/prometheus/',
+  minioUrl: import.meta.env.VITE_MINIO_URL || 'http://localhost/minio/',
   keycloak: {
-    url: import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost:8080',
+    url: import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost/auth',
     realm: import.meta.env.VITE_KEYCLOAK_REALM || 'infra-admin',
     clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'ai-front-spa',
     minValidity: Number(import.meta.env.VITE_KEYCLOAK_MIN_VALIDITY) || 70,

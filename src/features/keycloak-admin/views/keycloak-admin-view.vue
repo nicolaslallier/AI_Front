@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full min-h-full">
     <!-- Error State -->
     <keycloak-admin-error v-if="hasError && state.error" :error="state.error" @retry="handleRetry" />
 

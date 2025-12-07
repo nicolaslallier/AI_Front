@@ -49,6 +49,11 @@ describe('config', () => {
       expect(typeof config.prometheusUrl).toBe('string');
     });
 
+    it('should have minioUrl property', () => {
+      expect(config).toHaveProperty('minioUrl');
+      expect(typeof config.minioUrl).toBe('string');
+    });
+
     it('should provide default values', () => {
       expect(config.apiBaseUrl).toBeDefined();
       expect(config.environment).toBeDefined();
@@ -59,6 +64,7 @@ describe('config', () => {
       expect(config.lokiUrl).toBeDefined();
       expect(config.tempoUrl).toBeDefined();
       expect(config.prometheusUrl).toBeDefined();
+      expect(config.minioUrl).toBeDefined();
     });
 
     it('should have default Grafana URL', () => {
@@ -83,6 +89,10 @@ describe('config', () => {
 
     it('should have default Prometheus URL', () => {
       expect(config.prometheusUrl).toBe('http://localhost/prometheus/');
+    });
+
+    it('should have default MinIO URL', () => {
+      expect(config.minioUrl).toBe('http://localhost/minio/');
     });
   });
 

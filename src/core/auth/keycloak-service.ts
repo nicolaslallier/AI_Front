@@ -94,7 +94,7 @@ export class KeycloakService {
       // Merge initialization options
       const initOptions: KeycloakInitOptions = {
         pkceMethod: 'S256', // Enable PKCE for public clients (required)
-        onLoad: 'check-sso', // Check for existing SSO session
+        onLoad: undefined, // Don't automatically redirect - let auth guard handle it
         checkLoginIframe: false, // Disable iframe for SPA security
         ...options,
       };
@@ -173,9 +173,12 @@ export class KeycloakService {
     try {
       const kc = this.getKeycloak();
 
+      // Filter out undefined values from options to prevent overwriting defaults
+      const filteredOptions = Object.fromEntries(Object.entries(options).filter(([_, value]) => value !== undefined));
+
       const loginOptions: KeycloakLoginOptions = {
         redirectUri: window.location.origin + '/auth/callback',
-        ...options,
+        ...filteredOptions,
       };
 
       if (config.keycloak.enableDebug) {
@@ -210,9 +213,12 @@ export class KeycloakService {
       // Clear stored session
       this.clearSession();
 
+      // Filter out undefined values from options to prevent overwriting defaults
+      const filteredOptions = Object.fromEntries(Object.entries(options).filter(([_, value]) => value !== undefined));
+
       const logoutOptions: KeycloakLogoutOptions = {
         redirectUri: window.location.origin,
-        ...options,
+        ...filteredOptions,
       };
 
       if (config.keycloak.enableDebug) {

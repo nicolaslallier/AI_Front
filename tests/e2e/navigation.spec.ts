@@ -31,8 +31,8 @@ test.describe('Application Navigation', () => {
   test.describe('Navigation Menu Structure', () => {
     test('should display all navigation items', async ({ page }) => {
       const navLinks = page.locator('nav a');
-      // Home + 6 console items (Grafana, Loki, Tempo, Prometheus, pgAdmin, Keycloak)
-      await expect(navLinks).toHaveCount(7);
+      // Home + 7 console items (Grafana, Loki, Tempo, Prometheus, MinIO, pgAdmin, Keycloak)
+      await expect(navLinks).toHaveCount(8);
     });
 
     test('should have Home navigation item', async ({ page }) => {
@@ -52,6 +52,9 @@ test.describe('Application Navigation', () => {
       await expect(page.getByRole('link', { name: /Traces.*Tempo/ })).toBeVisible();
       await expect(page.getByRole('link', { name: /Metrics.*Prometheus/ })).toBeVisible();
 
+      // Storage consoles
+      await expect(page.getByRole('link', { name: /MinIO Storage/ })).toBeVisible();
+
       // Admin consoles
       await expect(page.getByRole('link', { name: 'pgAdmin' })).toBeVisible();
       await expect(page.getByRole('link', { name: 'Keycloak Admin' })).toBeVisible();
@@ -66,6 +69,7 @@ test.describe('Application Navigation', () => {
       expect(links).toContain('Logs (Loki)');
       expect(links).toContain('Traces (Tempo)');
       expect(links).toContain('Metrics (Prometheus)');
+      expect(links).toContain('MinIO Storage');
       expect(links).toContain('pgAdmin');
       expect(links).toContain('Keycloak Admin');
     });
@@ -313,6 +317,95 @@ test.describe('Application Navigation', () => {
 
       const nav = page.locator('nav');
       await expect(nav).toBeVisible();
+    });
+  });
+
+  test.describe('MinIO Storage Console', () => {
+    test('should have MinIO navigation item', async ({ page }) => {
+      await page.waitForURL('**/home');
+      const minioLink = page.getByRole('link', { name: /MinIO Storage/ });
+      await expect(minioLink).toBeVisible();
+    });
+
+    test('should navigate to MinIO console', async ({ page }) => {
+      await page.waitForURL('**/home');
+      await page.click('text=MinIO Storage');
+      await page.waitForURL('**/minio');
+      expect(page.url()).toContain('/minio');
+    });
+
+    test('should maintain shell on MinIO page', async ({ page }) => {
+      await page.goto('/minio');
+      await page.waitForURL('**/minio');
+
+      const header = page.locator('header');
+      const nav = page.locator('nav');
+
+      await expect(header).toBeVisible();
+      await expect(nav).toBeVisible();
+      await expect(header).toContainText('AI Front');
+    });
+
+    test('should update page title for MinIO', async ({ page }) => {
+      await page.goto('/minio');
+      await page.waitForURL('**/minio');
+      await expect(page).toHaveTitle(/MinIO Storage.*AI Front/);
+    });
+
+    test('should highlight MinIO link when active', async ({ page }) => {
+      await page.goto('/minio');
+      await page.waitForURL('**/minio');
+
+      const minioLink = page.getByRole('link', { name: /MinIO Storage/ });
+      await expect(minioLink).toHaveClass(/text-indigo-600/);
+    });
+
+    test('should support browser navigation from MinIO', async ({ page }) => {
+      await page.waitForURL('**/home');
+
+      // Navigate to MinIO
+      await page.click('text=MinIO Storage');
+      await page.waitForURL('**/minio');
+
+      // Go back
+      await page.goBack();
+      await page.waitForURL('**/home');
+      expect(page.url()).toContain('/home');
+
+      // Go forward
+      await page.goForward();
+      await page.waitForURL('**/minio');
+      expect(page.url()).toContain('/minio');
+    });
+
+    test('should navigate between MinIO and other consoles', async ({ page }) => {
+      await page.waitForURL('**/home');
+
+      // Go to MinIO
+      await page.click('text=MinIO Storage');
+      await page.waitForURL('**/minio');
+
+      // Go to Grafana
+      await page.click('text=Grafana');
+      await page.waitForURL('**/grafana');
+
+      // Back to MinIO
+      await page.click('text=MinIO Storage');
+      await page.waitForURL('**/minio');
+
+      expect(page.url()).toContain('/minio');
+    });
+
+    test('should handle direct access to MinIO route', async ({ page }) => {
+      await page.goto('/minio');
+      await page.waitForURL('**/minio');
+
+      const header = page.locator('header');
+      const nav = page.locator('nav');
+
+      await expect(header).toBeVisible();
+      await expect(nav).toBeVisible();
+      expect(page.url()).toContain('/minio');
     });
   });
 });

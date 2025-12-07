@@ -1,9 +1,11 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50">
-    <app-header />
-    <app-navigation :items="navigationItems" />
-    <main class="flex-1">
-      <router-view />
+  <div class="h-screen flex flex-col bg-gray-50">
+    <app-header class="flex-shrink-0" />
+    <app-navigation :items="navigationItems" class="flex-shrink-0" />
+    <main class="flex-1 overflow-auto min-h-0">
+      <div class="h-full">
+        <router-view />
+      </div>
     </main>
   </div>
 </template>
@@ -72,6 +74,14 @@ export default defineComponent({
           path: '/metrics',
           visible: true,
           requiredRoles: ['ROLE_DEVOPS', 'ROLE_SECOPS', 'ROLE_OBS_VIEWER'],
+        },
+        // Storage section
+        {
+          id: 'minio',
+          label: 'MinIO Storage',
+          path: '/minio',
+          visible: true,
+          requiredRoles: ['ROLE_MINIO_ADMIN', 'ROLE_MINIO_READONLY'],
         },
         // Administration section
         {

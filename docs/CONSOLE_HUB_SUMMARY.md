@@ -14,23 +14,25 @@ Integration of 5 admin/observability consoles (pgAdmin, Keycloak Admin, Loki, Te
 | Loki | `/logs` | ROLE_DEVOPS, ROLE_SECOPS, ROLE_OBS_VIEWER | Logs |
 | Tempo | `/traces` | ROLE_DEVOPS, ROLE_SECOPS, ROLE_OBS_VIEWER | Traces |
 | Prometheus | `/metrics` | ROLE_DEVOPS, ROLE_SECOPS, ROLE_OBS_VIEWER | Metrics |
+| MinIO | `/minio` | ROLE_MINIO_ADMIN, ROLE_MINIO_READONLY | Object Storage |
 | pgAdmin | `/pgadmin` | ROLE_DBA, ROLE_DB_ADMIN | Database Admin |
 | Keycloak | `/keycloak` | ROLE_IAM_ADMIN | IAM Admin |
 
 ### Files Created/Modified
 
-**New Console Features (50+ files):**
+**New Console Features (60+ files):**
 - `src/features/pgadmin/` - Complete feature with components, composables, views, types, tests
 - `src/features/keycloak-admin/` - Complete feature
 - `src/features/loki/` - Complete feature
 - `src/features/tempo/` - Complete feature
 - `src/features/prometheus/` - Complete feature
+- `src/features/minio/` - Complete feature (MinIO object storage console)
 
 **Modified Core Files:**
-- `src/core/config/index.ts` - Added 5 console URL configurations
+- `src/core/config/index.ts` - Added 6 console URL configurations (including MinIO)
 - `src/core/config/index.spec.ts` - Updated tests
-- `src/core/router/index.ts` - Added 5 new routes with role guards
-- `src/features/layout/components/app-shell.vue` - Added 6 navigation items (Grafana + 5 new consoles)
+- `src/core/router/index.ts` - Added 6 new routes with role guards (including MinIO)
+- `src/features/layout/components/app-shell.vue` - Added 7 navigation items (Grafana + 6 new consoles including MinIO)
 
 **New Test Files:**
 - `tests/e2e/console-hub.spec.ts` - Comprehensive E2E tests for console navigation
@@ -51,6 +53,7 @@ VITE_KEYCLOAK_ADMIN_URL=http://localhost/keycloak/
 VITE_LOKI_URL=http://localhost/loki/
 VITE_TEMPO_URL=http://localhost/tempo/
 VITE_PROMETHEUS_URL=http://localhost/prometheus/
+VITE_MINIO_URL=http://localhost/minio/
 ```
 
 ### Keycloak Roles Required
@@ -61,6 +64,10 @@ Configure these roles in Keycloak realm:
 - ROLE_DEVOPS
 - ROLE_SECOPS
 - ROLE_OBS_VIEWER
+
+**Storage:**
+- ROLE_MINIO_ADMIN
+- ROLE_MINIO_READONLY
 
 **Administration:**
 - ROLE_DBA
@@ -155,9 +162,9 @@ npm run test -- pgadmin
 ## Implementation Status
 
 ✅ All requirements from specification document implemented
-✅ All 5 consoles integrated (pgAdmin, Keycloak, Loki, Tempo, Prometheus)
+✅ All 6 consoles integrated (pgAdmin, Keycloak, Loki, Tempo, Prometheus, MinIO)
 ✅ Router configuration updated with role guards
-✅ Navigation menu updated with role-based filtering
+✅ Navigation menu updated with role-based filtering (new Storage section)
 ✅ Comprehensive test coverage (unit + E2E)
 ✅ Full documentation created
 ✅ Follows Vue 3 Composition API standards
