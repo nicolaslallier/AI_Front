@@ -1,10 +1,12 @@
 <template>
   <div class="w-full h-full min-h-full">
     <!-- Error State -->
-    <pgadmin-error v-if="hasError && state.error" :error="state.error" @retry="handleRetry" />
+    <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+    <PgAdminError v-if="hasError && state.error" :error="state.error" @retry="handleRetry" />
 
     <!-- pgAdmin Iframe -->
-    <pgadmin-iframe v-else :url="state.url" :is-loading="isLoading" @load="handleLoad" @error="handleError" />
+    <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+    <PgAdminIframe v-else :url="state.url" :is-loading="isLoading" @load="handleLoad" @error="handleError" />
   </div>
 </template>
 
@@ -28,12 +30,10 @@ import { Logger } from '@/shared/utils/logger';
 export default defineComponent({
   name: 'PgAdminView',
 
-  /* eslint-disable vue/no-unused-components */
   components: {
     PgAdminIframe,
     PgAdminError,
   },
-  /* eslint-enable vue/no-unused-components */
 
   setup() {
     const { state, isLoading, hasError, setLoading, setLoaded, setError, incrementRetryCount } = usePgAdmin();

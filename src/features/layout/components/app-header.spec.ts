@@ -33,7 +33,7 @@ describe('AppHeader', () => {
           },
         },
       });
-      expect(wrapper.text()).toContain('AI Front');
+      expect(wrapper.text()).toContain('Monitoring and Administration Portal');
     });
 
     it('should render with custom title prop', () => {
@@ -132,7 +132,7 @@ describe('AppHeader', () => {
           },
         },
       });
-      expect(wrapper.text()).toContain('AI Front');
+      expect(wrapper.text()).toContain('Monitoring and Administration Portal');
     });
   });
 });

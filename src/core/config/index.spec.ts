@@ -76,7 +76,7 @@ describe('config', () => {
     });
 
     it('should have default Keycloak Admin URL', () => {
-      expect(config.keycloakAdminUrl).toBe('http://localhost/keycloak/');
+      expect(config.keycloakAdminUrl).toBe('http://localhost/keycloak-admin/');
     });
 
     it('should have default Loki URL', () => {

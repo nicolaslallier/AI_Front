@@ -48,9 +48,9 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'home',
         name: 'home',
-        component: () => import('@/features/counter/views/home-view.vue'),
+        component: () => import('@/features/home/views/home-view.vue'),
         meta: {
-          title: 'Home',
+          title: 'Welcome',
           requiresAuth: true, // All routes require auth as per user requirement
         },
       },
@@ -173,7 +173,7 @@ router.beforeEach(roleGuard);
 router.beforeEach((to, from, next) => {
   const title = to.meta.title as string;
   if (title) {
-    document.title = `${title} | AI Front`;
+    document.title = `${title} | Monitoring and Administration Portal`;
   }
 
   // Log navigation for audit purposes (FR-008)

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex flex-col bg-gray-50">
+  <div class="min-h-screen h-screen flex flex-col bg-gray-50">
     <app-header class="flex-shrink-0" />
     <app-navigation :items="navigationItems" class="flex-shrink-0" />
     <main class="flex-1 overflow-auto min-h-0">

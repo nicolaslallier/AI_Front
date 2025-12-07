@@ -40,11 +40,11 @@ export default defineComponent({
   props: {
     /**
      * Application title to display in the header
-     * @default 'AI Front'
+     * @default 'Monitoring and Administration Portal'
      */
     title: {
       type: String,
-      default: 'AI Front',
+      default: 'Monitoring and Administration Portal',
     },
   },
 

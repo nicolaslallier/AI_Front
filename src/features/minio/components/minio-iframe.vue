@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-full min-h-full">
+  <div class="relative w-full h-full min-h-full min-h-screen">
     <!-- Loading Overlay -->
     <div
       v-if="isLoading"

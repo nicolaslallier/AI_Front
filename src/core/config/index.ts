@@ -37,7 +37,7 @@ export const config: AppConfig = {
   enableDebug: import.meta.env.DEV || false,
   grafanaUrl: import.meta.env.VITE_GRAFANA_URL || 'http://localhost/grafana/',
   pgAdminUrl: import.meta.env.VITE_PGADMIN_URL || 'http://localhost/pgadmin/',
-  keycloakAdminUrl: import.meta.env.VITE_KEYCLOAK_ADMIN_URL || 'http://localhost/keycloak/',
+  keycloakAdminUrl: import.meta.env.VITE_KEYCLOAK_ADMIN_URL || 'http://localhost/keycloak-admin/',
   lokiUrl: import.meta.env.VITE_LOKI_URL || 'http://localhost/loki/',
   tempoUrl: import.meta.env.VITE_TEMPO_URL || 'http://localhost/tempo/',
   prometheusUrl: import.meta.env.VITE_PROMETHEUS_URL || 'http://localhost/prometheus/',
