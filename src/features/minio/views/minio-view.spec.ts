@@ -37,7 +37,7 @@ describe('MinioView', () => {
     it('should pass MinIO URL to iframe', () => {
       const wrapper = mount(MinioView);
       const iframe = wrapper.findComponent(MinioIframe);
-      expect(iframe.props('url')).toBe('http://localhost/minio/');
+      expect(iframe.props('url')).toBe('http://localhost/minio-console/');
     });
 
     it('should not show error component initially', () => {

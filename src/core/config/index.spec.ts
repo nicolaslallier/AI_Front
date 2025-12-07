@@ -92,7 +92,7 @@ describe('config', () => {
     });
 
     it('should have default MinIO URL', () => {
-      expect(config.minioUrl).toBe('http://localhost/minio/');
+      expect(config.minioUrl).toBe('http://localhost/minio-console/');
     });
   });
 
